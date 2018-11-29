@@ -1,0 +1,82 @@
+<coco-open-project>
+    <style>
+        #settings-wrapper{
+            min-height: 500px;
+            /* min-width: 400px; */
+        }
+        .buttonGeneralData{
+        	text-align: center;
+        }
+
+        .nav-item > a{
+          color: #aaaaaa;
+        }
+
+    </style>
+    <div id="settings-wrapper">
+
+	    <h3>Project Path</h3>
+
+    <ul class="nav nav-tabs" id="projectTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="project-tab" data-toggle="tab" href="#project" role="tab" aria-controls="project" aria-selected="true">Project</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="projectdata-tab" data-toggle="tab" href="#projectdata" role="tab" aria-controls="projectdata" aria-selected="false">projectData</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="projectTabContent">
+      <div class="tab-pane fade show active" id="project" role="tabpanel" aria-labelledby="project-tab">
+        <small>We auto save labeling data in browser cache.</small>
+        <br>
+        <div class="row">
+            <div class="col-4">
+                Image Path
+                <small><i class="icon-attention-circled small" data-toggle="tooltip" title="Image path is the absolute or relative path of image directory in server's file system."></i></small>
+            </div>
+            <div class="col-8 float-right">
+                <input  type="text" value={ ccl.settings.imgpath } > <small></small> 
+            </div>
+        </div>
+		<div class="row">
+            <div class="col-4">
+                Work Path
+                <small><i class="icon-attention-circled small" data-toggle="tooltip" title="Work path is the absolute or relative path of image label directory in server's file system."></i></small>
+            </div>
+            <div class="col-8 float-right">
+                <input  type="text" value={ ccl.settings.workpath } > <small></small> 
+            </div>
+        </div>
+		<div class="row">
+            <div class="col-4">
+                Label Mode
+                <small><i class="icon-attention-circled small" data-toggle="tooltip" title="Only PascalVOC is supported."></i></small>
+            </div>
+            <div class="col-8 float-right">
+                <input readonly="true" type="text" value={ ccl.settings.labelmode } > <small></small> 
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-theme" onclick={switchProject}>switch</button>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="data" role="tabpanel" aria-labelledby="projectdata-tab">
+        some data info...
+      </div>
+    </div>
+
+    </div>
+    <script>
+        this.switchProject = function() {
+			ccl.project.init(function(result){
+				if (result && window.closeProjectModalDialog) {
+					window.closeProjectModalDialog();
+				} else {
+					alert('Loading project failed');
+				}
+			})
+		}
+
+
+    </script>
+</coco-open-project>
