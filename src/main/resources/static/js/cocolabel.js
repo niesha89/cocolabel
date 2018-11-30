@@ -60,7 +60,7 @@ ccl.net.loadImageDir = function(callback) {
 			ccl.currentImageList = [];
 			tag.thumbnails = [];
 			console.log(err);
-			alert("����ͼƬ�б�ʧ��")
+			alert("requesting image list failed")
 			if (callback) callback(false);
 		}
 	})
@@ -74,7 +74,7 @@ ccl.net.loadThumbnails = function(){
 		
 		//	ccl.slidetag.thumbnails.push({name : item, src: "data:image/" + picdata.type +  ";base64,"+ picdata.data});
 		//	ccl.slidetag.update();
-		ccl.slidetag.thumbnails.push({name : item, src: ccl.baseURL+"img?imgfile=" + imgpath + item + "&w=" + ccl.defaultSettings.thumbnailwidth});
+		ccl.slidetag.thumbnails.push({name : item, src: ccl.baseURL+"img?imgfile=" + encodeURI(imgpath) + encodeURI(item) + "&w=" + ccl.defaultSettings.thumbnailwidth});
 		ccl.slidetag.update();
 	}
 }
@@ -106,24 +106,24 @@ ccl.net.loadImage = function(imgname, callback, thumb) {
 }
 
 ccl.net.loadDefaultSettings = function() {
-    //'http://localhost:9999/loadDefaultSettings?workpath=E:/aidata/imgclass/person/'
-    $.ajax({
-        url:ccl.baseURL+"loadDefaultSettings",
-        data: {
-            workpath:ccl.settings.workpath
-        },
-        method:"get",
-        success:function(data){
-            tmpdefaultSettings = JSON.parse(data);
-            if (tmpdefaultSettings.categories) {
-                ccl.defaultSettings = tmpdefaultSettings
-            } else {
-                ccl.defaultSettings = ccl.resetDefaultSettings()
-            }
-        },
-        failure:function(){
-        }
-    })
+	//'http://localhost:9999/loadDefaultSettings?workpath=E:/aidata/imgclass/person/'
+	$.ajax({
+		url:ccl.baseURL+"loadDefaultSettings",
+		data: {
+			workpath:ccl.settings.workpath
+		},
+		method:"get",
+		success:function(data){
+			tmpdefaultSettings = JSON.parse(data);
+			if (tmpdefaultSettings.categories) {
+				ccl.defaultSettings = tmpdefaultSettings
+			} else {
+				ccl.defaultSettings = ccl.resetDefaultSettings()
+			}
+		},
+		failure:function(){
+		}
+	})
 }
 
 ccl.net.loadLabel = function(imgname, callback) {
