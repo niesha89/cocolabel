@@ -35,6 +35,7 @@ public class LabelController implements ApplicationContextAware {
     @RequestMapping(value = "/saveLabel",method= RequestMethod.POST)
     public String saveLabel(@RequestParam("workpath") String workpath,
                             @RequestParam(value = "type", defaultValue = "PascalVOC") String saveType,
+                            @RequestParam(value = "labelSuffix", defaultValue = ".xml") String suffix,
                             @RequestParam("labeldata") String labeldata,
                             HttpServletResponse response) {
         if (!FileUtils.exists(workpath)) {
@@ -52,7 +53,7 @@ public class LabelController implements ApplicationContextAware {
 //            RestUtils.returnError(response, "exception occurs while writing file", 400);
 //        }
         LabelParser lp = (LabelParser)applicationContext.getBean(saveType + "Parser");
-        lp.save(workpath + imageName + "_" + saveType + ".xml", map);
+        lp.save(workpath + imageName + suffix, map);
 
         return "saved";
     }
@@ -60,6 +61,7 @@ public class LabelController implements ApplicationContextAware {
     @RequestMapping(value = "/loadLabel",method= RequestMethod.POST)
     public String loadLabel(@RequestParam("workpath") String workpath,
                             @RequestParam(value = "type", defaultValue = "PascalVOC") String saveType,
+                            @RequestParam(value = "labelSuffix", defaultValue = ".xml") String suffix,
                             @RequestParam("imgname") String imgname,
                             HttpServletResponse response) {
         if (!FileUtils.exists(workpath)) {
@@ -67,7 +69,7 @@ public class LabelController implements ApplicationContextAware {
             return null;
         }
 
-        String labelFileName = workpath + imgname + "_" + saveType + ".xml";
+        String labelFileName = workpath + imgname + suffix;
         if (!new File(labelFileName).exists()) {
             return "{}";
         }

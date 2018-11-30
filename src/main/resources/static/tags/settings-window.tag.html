@@ -5,71 +5,71 @@
             /* min-width: 400px; */
         }
         .buttonGeneralData{
-        	text-align: center;
+            text-align: center;
         }
 
         .nav-item > a{
-          color: #aaaaaa;
+            color: #aaaaaa;
         }
 
-		.black-input {
-			color:black
-		}
+        .black-input {
+            color:black
+        }
     </style>
     <div id="settings-wrapper">
 
-	    <h3>Project Configuration</h3>
+        <h3>Project Configuration</h3>
 
-    <ul class="nav nav-tabs" id="settingsTab" role="tablist">
-      <li class="nav-item">
-        <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">General</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" id="data-tab" data-toggle="tab" href="#data" role="tab" aria-controls="data" aria-selected="false">Data</a>
-      </li>
-    </ul>
-    <div class="tab-content" id="settingsTabContent">
-      <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
-        <!--<small>We auto save labeling data in browser cache.</small>-->
-        <br>
-        <!--<div class="row">
-            <div class="col-6">
-                Auto Syncing Interval
-                <small><i class="icon-attention-circled small" data-toggle="tooltip" title="Change how early the data should be saved in browser cache.  Set 0 to disable. Minimum value is 4 sec."></i></small>
-            </div>
-            <div class="col-6 float-right">
-                <input  type="text" value={ appConfig.autosave.syncingInterval / 1000} size=4 onchange={changeInterval}> <small></small> seconds
-            </div>
-        </div>-->
-		
-		<div class="row">
-            <div class="col-12">
-                Predefined Categories
-                <small><i class="icon-attention-circled small" data-toggle="tooltip" title="Predefined Categories."></i></small>
-            </div>
-            <div ref="label-data" class="col-12 mb-2 mt-2">
-            Categories <small>(separated by comma)</small>
-            <div id="predefinedCategory" class="input tagarea clearfix"></div>
-        </div>
-        </div>
+        <ul class="nav nav-tabs" id="settingsTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">General</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="data-tab" data-toggle="tab" href="#data" role="tab" aria-controls="data" aria-selected="false">Data</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="settingsTabContent">
+            <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                <!--<small>We auto save labeling data in browser cache.</small>-->
+                <br>
+                <div class="row">
+                    <div class="col-6">
+                        Label File Suffix
+                        <small><i class="icon-attention-circled small" data-toggle="tooltip" title="Label File name will be imgname + suffix, e.g : if suffix is set to '_voc.xml' the label file name will be '1.jpg_voc.xml' "></i></small>
+                    </div>
+                    <div class="col-6 float-right">
+                        <input id="labelSuffix" type="text" value={ccl.defaultSettings.labelSuffix } >
+                    </div>
+                </div>
 
-        <!-- <div class="row">
-            <div class="col-6">
-                Keep after export
-                <small><i class="icon-attention-circled small" data-toggle="tooltip" title="If this option is unchecked, browser cahche will be cleared once you export the data."></i></small>
+                <div class="row">
+                    <div class="col-12">
+                        Predefined Categories
+                        <small><i class="icon-attention-circled small" data-toggle="tooltip" title="Predefined Categories."></i></small>
+                    </div>
+                    <div ref="label-data" class="col-12 mb-2 mt-2">
+                        Categories <small>(separated by comma)</small>
+                        <div id="predefinedCategory" class="input tagarea clearfix"></div>
+                    </div>
+                </div>
+
+                <!-- <div class="row">
+                    <div class="col-6">
+                        Keep after export
+                        <small><i class="icon-attention-circled small" data-toggle="tooltip" title="If this option is unchecked, browser cahche will be cleared once you export the data."></i></small>
+                    </div>
+                    <div class="col-6">
+                        <input  type="checkbox" value={ appConfig.autosave.syncingInterval / 1000} size=4>
+                    </div>
+                </div> -->
+                <div>
+                    <button class="btn btn-theme" onclick={saveSettings}>Save settings</button>
+                </div>
             </div>
-            <div class="col-6">
-                <input  type="checkbox" value={ appConfig.autosave.syncingInterval / 1000} size=4>
+            <div class="tab-pane fade" id="data" role="tabpanel" aria-labelledby="data-tab">
+                some data info...
             </div>
-        </div> -->
-        <div>
-            <button class="btn btn-theme" onclick={saveSettings}>Save settings</button>
         </div>
-      </div>
-      <div class="tab-pane fade" id="data" role="tabpanel" aria-labelledby="data-tab">
-        some data info...
-      </div>
-    </div>
 
     </div>
     <script>
@@ -86,42 +86,43 @@
                 appConfig.autosave.syncingInterval = e.target.value * 1000;
             }
         }*/
-		
-		var tempSettings = $.extend(true, {}, ccl.defaultSettings);
-		
-		var self = this;
-		
-		this.saveSettings = function() {
-			ccl.net.saveDefaultSettings(tempSettings, function(result) {
-				if (result) {
-					window.closeSettingsModalDialog();
-				} else {
-					$.confirm({
-						title: "Warning",
-						content : 'An error occured while saving settings. Would you like to discard changes anyway?',
-						buttons : {
-							confirm: {
-								text : 'Yes',
-								action: function () {
-									window.closeSettingsModalDialog();
-								}
-							},
-							cancel: {
-								text : 'No',
-								action: function () {
-									//no action
-								}
-							}
-						}
-					})
-				}
-			})
-			//this.unmount();
-		}
 
-		
-		self.on("mount", function() {
-			var predefinedCategory = new Taggle('predefinedCategory', {
+        var tempSettings = $.extend(true, {}, ccl.defaultSettings);
+
+        var self = this;
+
+        this.saveSettings = function() {
+            tempSettings.labelSuffix = $('#labelSuffix').val()
+            ccl.net.saveDefaultSettings(tempSettings, function(result) {
+                if (result) {
+                    window.closeSettingsModalDialog();
+                } else {
+                    $.confirm({
+                        title: "Warning",
+                        content : 'An error occured while saving settings. Would you like to discard changes anyway?',
+                        buttons : {
+                            confirm: {
+                                text : 'Yes',
+                                action: function () {
+                                    window.closeSettingsModalDialog();
+                                }
+                            },
+                            cancel: {
+                                text : 'No',
+                                action: function () {
+                                    //no action
+                                }
+                            }
+                        }
+                    })
+                }
+            })
+            //this.unmount();
+        }
+
+
+        self.on("mount", function() {
+            var predefinedCategory = new Taggle('predefinedCategory', {
                 tags: tempSettings.categories,
                 duplicateTagClass: 'bounce',
                 onTagAdd : function(event, tagText){
@@ -134,7 +135,7 @@
                     tempSettings.categories.splice(tempSettings.categories.indexOf(tagText), 1);
                 }
             });
-			
+
             var predefinedCategoryContainer = predefinedCategory.getContainer();
             var predefinedCategoryInput = predefinedCategory.getInput();
 
@@ -155,8 +156,8 @@
                     }
                 }
             })
-			$("#predefinedCategory .taggle_input").css('color', 'black')
-			$("#predefinedCategory").css('border-color','#000000')
-		});
+            $("#predefinedCategory .taggle_input").css('color', 'black')
+            $("#predefinedCategory").css('border-color','#000000')
+        });
     </script>
 </settings-window>

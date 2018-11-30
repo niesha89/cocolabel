@@ -238,6 +238,10 @@
 					if (data) {
 						if (data.imagename) {
 							labellingData[imgname] = data
+						} else {
+							if (labellingData[imgname]) {
+								labellingData[imgname].shapes=[]
+							}
 						}
 						loadLabelCallback();
 					} else {
