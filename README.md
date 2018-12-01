@@ -14,9 +14,9 @@ The backend is written based on spring boot : https://github.com/spring-projects
 
 ## How to install
 
-To install locally, compile command like this:
+- To install locally, compile command like this:
 * mvn package
-Find the build jar in target folder, then run this:
+- Find the built jar in target folder, then run this:
 * java -jar cocolabel-0.1.jar
 
 
