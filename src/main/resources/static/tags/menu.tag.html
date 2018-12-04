@@ -22,7 +22,7 @@
             </a>
             <a href="#" id="saveLabel" onclick={saveLabel}>
               <label>Save Label</label>
-              <span>Ctrl + e</span>
+              <span>Ctrl + s</span>
             </a>
 			<a href="#" id="loadLabel" onclick={loadLabel}>
               <label>Load Label</label>
@@ -32,6 +32,7 @@
         </div>
     </div>
     <script>
+        var self = this;
         this.openFile = function(){
             //readDataFile(e);
             //openDataFile()
@@ -55,7 +56,8 @@
         //Mapping Keyboard keys
         this.on('mount', function(){
 
-            document.addEventListener('keydown', e => {//import
+            /*document.addEventListener('keydown', e => {//import
+                console.log("keydown", e.key)
                 if ( (e.key == 'I' || e.key == 'i') && !e.shiftKey && !e.altKey && e.ctrlKey ){
                     document.getElementById('browse').click();
                     e.preventDefault();
@@ -67,6 +69,24 @@
                     e.stopPropagation();
                 }
 
+            })*/
+
+            $(document).on("keydown", e=> {
+                if ( (e.key == 'I' || e.key == 'i') && !e.shiftKey && !e.altKey && e.ctrlKey ){
+                    self.openFile();
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                if ( (e.key == 'S' || e.key == 's') && !e.shiftKey && !e.altKey && e.ctrlKey ){//save
+                    self.saveLabel();
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                if ( (e.key == 'L' || e.key == 'l') && !e.shiftKey && !e.altKey && e.ctrlKey ){//load
+                    self.loadLabel();
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
             })
         });
     </script>

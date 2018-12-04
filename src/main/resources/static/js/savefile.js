@@ -137,8 +137,40 @@ function saveToRemoteAsPascalVOC() {
         return;
     }else {
         var data = labellingData[ imgSelected.name ];
-		ccl.net.saveLabel(data);
+		ccl.net.saveLabel(data, function(rs) {
+		    if(rs) {labelIntact = true;}
+		});
     }
+}
+
+function loadFromRemoteAsPascalVOC() {
+
+    function loadLabelCallback() {
+        labelIntact = true;
+        riot.mount("workarea",{ img : imgSelected });
+        currentImgname = imgname
+    }
+
+    ccl.net.loadLabel(imgname, function(data){
+        if (data) {
+            if (data.imagename) {
+                labellingData[imgname] = data
+            } else {
+                if (labellingData[imgname]) {
+                    labellingData[imgname].shapes=[]
+                }
+            }
+            loadLabelCallback();
+        } else {
+            $.alert({
+                title: "Warning",
+                content : 'An error occured while loading the label data of current image.',
+                buttons : {
+
+                }
+            })
+        }
+    })
 }
 
 /**
