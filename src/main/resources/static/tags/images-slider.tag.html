@@ -3,23 +3,37 @@
         input[type='file'] {
             display: none;
         }
-    </style>
-        <div style="width: 50px;  text-align: center; padding: 10px;">
-                <!--<label class="btn-bs-file">
-                    <i class="icon-picture" style="font-size: 1.5em"></i>
-                    <input id="browseImages" type="file" class="filebutton" accept="image/*"  onchange= { readImageFiles }  multiple/>
-                </label>
 
-                <label class="btn-bs-file">
-                    <i class="icon-folder-open-empty" style="font-size: 1.5em"></i>
-                    <input type="file" id="image_folder" webkitdirectory mozdirectory msdirectory odirectory directory onchange={ readImageFiles } >
-                </label>-->
-        </div>
-        <div id="leftpaddle" class="align-middle"  style="height: 100%;">
-            <span style="width: 50px; height: 90px;">
+        .imgfocused {
+            border: 3px solid #ff0000 !important;
+            opacity: 1 !important;
+        }
+
+    </style>
+    <!--<div style="width: 50px;  text-align: center; padding: 10px;">
+            <label class="btn-bs-file">
+                <i class="icon-picture" style="font-size: 1.5em"></i>
+                <input id="browseImages" type="file" class="filebutton" accept="image/*"  onchange= { readImageFiles }  multiple/>
+            </label>
+
+            <label class="btn-bs-file">
+                <i class="icon-folder-open-empty" style="font-size: 1.5em"></i>
+                <input type="file" id="image_folder" webkitdirectory mozdirectory msdirectory odirectory directory onchange={ readImageFiles } >
+            </label>
+        </div>-->
+    <div>
+        <div id="leftpaddle" class="align-top"  style="height: 50%;">
+            <span style="width: 50px; height: 45px;">
                 <i class="icon-left-open" style="font-size: 1.5em"></i>
             </span>
         </div>
+        <div id="leftpaddle2" class="align-bottom"  style="height: 50%;">
+                <span style="width: 50px; height: 45px; ">
+                    <i class="icon-upload" style="font-size: 1.5em"></i>
+                </span>
+        </div>
+    </div>
+
         <div class="photolist-wrapper " style="width: calc(100% - 160px); height: 90px;">
             <div id="photolist" class="photolist">
                     <!-- <span each={ thumbnails } class="d-inline-block">
@@ -28,11 +42,19 @@
                     <!-- </span> -->
             </div>
         </div>
+
+    <div>
         <div id="rightpaddle" class="align-middle"  style="height: 100%;">
             <span style="width: 50px; height: 90px;">
                 <i class="icon-right-open" style="font-size: 1.5em"></i>
             </span>
         </div>
+        <div id="rightpaddle2" class="align-middle"  style="height: 100%;">
+            <span style="width: 50px; height: 90px;">
+                <i class="icon-download" style="font-size: 1.5em"></i>
+            </span>
+        </div>
+    </div>
 
 
     <script>
@@ -53,6 +75,14 @@
 
                 $("#rightpaddle").click(function(e){
                     tag.slideright(e);
+                })
+
+                $("#leftpaddle2").click(function(e){
+                    tag.slideleft(e, 5);
+                })
+
+                $("#rightpaddle2").click(function(e){
+                    tag.slideright(e, 5);
                 })
 
                 //Map keyboard keys
@@ -137,25 +167,33 @@
         }
 
         this.sliding = false;
-        this.sliderMove = "80px";
-        function slideleft(e) {
+        this.sliderMove = 80;
+        function slideleft(e, pace) {
+
+            pace = pace || 1;
             var photolist = $("#photolist");
             if (this.sliding === false) {
                 this.sliding = true;
-                photolist.css({ left: "-"+this.sliderMove })
-                    .prepend(photolist.children('img:last-child'))
-                    .animate({ left: 0 }, 200, 'linear', () => {
+                photolist.css({ left: "-"+ (pace * this.sliderMove) + 'px' });
+
+                for (var temp = 0; temp < pace; temp++) {
+                    photolist.prepend(photolist.children('img:last-child'))
+                }
+                photolist.animate({ left: 0 }, 100 + 100*pace, 'linear', () => {
                         this.sliding = false;
                     });
             }
         };
-        function slideright(e) {
+        function slideright(e, pace) {
+            pace = pace || 1;
             var photolist = $("#photolist");
             if (this.sliding === false) {
                 this.sliding = true;
-                photolist.animate({ left: "-"+this.sliderMove }, 200, 'linear', () => {
-                    photolist.css({ left: 0 })
-                        .append(photolist.children('img:first-child'));
+                photolist.animate({ left: "-"+ (pace * this.sliderMove) + 'px'}, 100 + 100*pace, 'linear', () => {
+                    photolist.css({ left: 0 });
+                    for (var temp = 0; temp < pace; temp++) {
+                        photolist.append(photolist.children('img:first-child'));
+                    }
                     this.sliding = false;
                 });
             }
@@ -230,6 +268,12 @@
 				
 				function loadLabelCallback() {
 					labelIntact = true;
+					$('.imgfocused').removeClass('imgfocused');
+
+					var $imgfocused = $('img[label="' + imgname +  '"]');
+                    $imgfocused.addClass('imgfocused');
+
+                    tag.currentIndex =  $imgfocused.attr('id').substring(10);//thumbnail_ len=10
 					riot.mount("workarea",{ img : imgData });
 					currentImgname = imgname
 				}
